@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sugam — Free Music</title>
+    <meta name="description" content="Ad-free music streaming. Paste any YouTube link and listen instantly.">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Custom BG image layer -->
+    <div class="custom-bg" id="custom-bg"></div>
+
+    <div class="app">
+        <!-- ═══ MAIN CONTENT ═══ -->
+        <main class="main" id="main-area">
+            <div class="main-scroll" id="main-scroll">
+                <div class="main-gradient" id="main-gradient"></div>
+
+                <header class="topbar">
+                    <div class="topbar-left">
+                        <div class="brand">
+                            <span class="brand-name">Sugam</span>
+                        </div>
+                    </div>
+                    <div class="topbar-search-container" id="topbar-search-container" style="display:none;">
+                        <div class="topbar-search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="search-input" placeholder="What do you want to listen to?">
+                            <button class="search-clear" id="search-clear"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </div>
+                    <div class="topbar-right">
+                        <button class="icon-btn" id="btn-add-top" title="Paste YouTube Link"><i class="fa-solid fa-plus"></i></button>
+                        <button class="icon-btn" id="btn-settings" title="Settings"><i class="fa-solid fa-gear"></i></button>
+                    </div>
+                </header>
+
+                <!-- ═══ HOME VIEW ═══ -->
+                <section class="view view-home active" id="view-home">
+                    <!-- 3D Carousel -->
+                    <section class="carousel-section">
+                        <div class="carousel-wrapper" id="carousel-wrapper">
+                            <div class="carousel-bg-glow" id="carousel-bg-glow"></div>
+                            <button class="carousel-arrow carousel-prev" id="carousel-prev"><i class="fa-solid fa-chevron-left"></i></button>
+                            <div class="carousel-stage" id="carousel-stage"></div>
+                            <button class="carousel-arrow carousel-next" id="carousel-next"><i class="fa-solid fa-chevron-right"></i></button>
+                        </div>
+                        <div class="carousel-dots" id="carousel-dots"></div>
+                    </section>
+
+                    <h2 class="greeting" id="greeting">Good Afternoon</h2>
+
+                    <!-- Recently Played -->
+                    <section class="shelf" id="shelf-recent" style="display:none;">
+                        <div class="shelf-header"><h3>🕐 Recently Played</h3></div>
+                        <div class="h-scroll-row" id="recent-row"></div>
+                    </section>
+
+                    <!-- Quick Picks (genre-based horizontal scroll cards) -->
+                    <section class="shelf">
+                        <div class="shelf-header"><h3>🔥 Quick Picks</h3></div>
+                        <div class="h-scroll-row" id="quick-picks-row"></div>
+                    </section>
+
+                    <!-- Mood Mixes (Glassmorphism) -->
+                    <section class="shelf">
+                        <div class="shelf-header"><h3>🎧 Mood Mixes</h3></div>
+                        <div class="mood-grid">
+                            <div class="mood-card mood-chill" data-mood="chill">
+                                <div class="mood-glass"></div>
+                                <div class="mood-content">
+                                    <span class="mood-emoji">😌</span>
+                                    <div class="mood-text">
+                                        <span class="mood-name">Chill Vibes</span>
+                                        <span class="mood-count">20 tracks</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mood-card mood-energy" data-mood="energy">
+                                <div class="mood-glass"></div>
+                                <div class="mood-content">
+                                    <span class="mood-emoji">⚡</span>
+                                    <div class="mood-text">
+                                        <span class="mood-name">Energy Boost</span>
+                                        <span class="mood-count">20 tracks</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mood-card mood-focus" data-mood="focus">
+                                <div class="mood-glass"></div>
+                                <div class="mood-content">
+                                    <span class="mood-emoji">🎯</span>
+                                    <div class="mood-text">
+                                        <span class="mood-name">Deep Focus</span>
+                                        <span class="mood-count">20 tracks</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mood-card mood-party" data-mood="party">
+                                <div class="mood-glass"></div>
+                                <div class="mood-content">
+                                    <span class="mood-emoji">🎉</span>
+                                    <div class="mood-text">
+                                        <span class="mood-name">Party Mode</span>
+                                        <span class="mood-count">20 tracks</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Smart Suggestions (personalized) -->
+                    <section class="shelf" id="shelf-smart" style="display:none;">
+                        <div class="shelf-header"><h3>✨ Suggested for you</h3></div>
+                        <div class="h-scroll-row" id="smart-row"></div>
+                    </section>
+
+                    <!-- All Tracks -->
+                    <section class="shelf">
+                        <div class="shelf-header">
+                            <h3>📋 All Tracks</h3>
+                            <button class="clear-btn" id="btn-clear-custom"><i class="fa-solid fa-trash-can"></i> Clear added</button>
+                        </div>
+                        <div class="tracklist"><div class="tracklist-body" id="tracklist-body"></div></div>
+                    </section>
+                </section>
+
+                <!-- ═══ SEARCH VIEW ═══ -->
+                <section class="view view-search" id="view-search">
+                    <h2 class="search-heading">Browse</h2>
+                    <div class="category-grid" id="category-grid">
+                        <div class="cat-card" style="background:linear-gradient(135deg,#1e3264,#4a7dff)" data-genre="pop">Pop</div>
+                        <div class="cat-card" style="background:linear-gradient(135deg,#e8115b,#ff6b8a)" data-genre="hindi">Hindi</div>
+                        <div class="cat-card" style="background:linear-gradient(135deg,#bc5900,#ff9d45)" data-genre="punjabi">Punjabi</div>
+                        <div class="cat-card" style="background:linear-gradient(135deg,#8400e7,#b44aff)" data-genre="edm">EDM</div>
+                        <div class="cat-card" style="background:linear-gradient(135deg,#148a08,#2dd41b)" data-genre="hiphop">Hip Hop</div>
+                        <div class="cat-card" style="background:linear-gradient(135deg,#e13300,#ff6b35)" data-genre="rock">Rock</div>
+                    </div>
+
+                    <!-- Local Results -->
+                    <div class="search-results" id="search-results" style="display:none;">
+                        <h3 class="search-section-title">📋 Your Library</h3>
+                        <div class="tracklist"><div class="tracklist-body" id="search-tracklist-body"></div></div>
+                    </div>
+
+                    <!-- JioSaavn Results -->
+                    <div class="yt-search-section" id="yt-search-section" style="display:none;">
+                        <div class="yt-search-header">
+                            <div class="yt-search-loader" id="yt-search-loader" style="display:none;">
+                                <div class="loader-spinner"></div>
+                                <span>Searching...</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Songs Results -->
+                        <div class="search-result-group" id="search-songs-group">
+                            <h3 class="search-section-title"><i class="fa-solid fa-music" style="color:#1db954;"></i> Songs</h3>
+                            <div class="yt-results-list" id="yt-results-list"></div>
+                        </div>
+                        
+                        <!-- Playlists & Albums Results -->
+                        <div class="search-result-group" id="search-playlists-group" style="margin-top:20px;">
+                            <h3 class="search-section-title"><i class="fa-solid fa-compact-disc" style="color:#ff9d45;"></i> Albums & Playlists</h3>
+                            <div class="h-scroll-row" id="yt-playlists-list" style="padding:10px 0;"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ═══ LIBRARY VIEW ═══ -->
+                <section class="view view-library" id="view-library">
+                    <h2 class="lib-heading">Your Library</h2>
+                    
+                    <!-- Playlist Grid Section -->
+                    <div class="library-playlists-section" style="margin-bottom:24px;">
+                        <div class="shelf-header" style="margin-bottom:12px;">
+                            <h3>📂 Playlists</h3>
+                            <button class="clear-btn" id="btn-create-playlist" style="font-size:12px;color:var(--accent);font-weight:700;"><i class="fa-solid fa-plus"></i> Create Playlist</button>
+                        </div>
+                        <div class="playlists-row" id="playlists-row" style="display:flex;gap:12px;overflow-x:auto;padding:8px 0;scrollbar-width:none;">
+                            <!-- Dynamic Playlists go here -->
+                        </div>
+                    </div>
+
+                    <div class="yt-paste-card" id="yt-paste-card">
+                        <p class="paste-label">Paste a YouTube or YT Music link</p>
+                        <div class="paste-input-row">
+                            <input type="text" id="yt-url-input" placeholder="https://youtube.com/watch?v=..." spellcheck="false" autocomplete="off">
+                            <button id="yt-add-btn"><i class="fa-solid fa-arrow-right"></i></button>
+                        </div>
+                        <p class="paste-hint" id="paste-status">Supports youtube.com, youtu.be & music.youtube.com</p>
+                    </div>
+                    <div class="library-list" id="library-list"></div>
+                </section>
+            </div>
+        </main>
+
+        <!-- ═══ NOW PLAYING SCREEN ═══ -->
+        <div class="np-screen" id="np-screen">
+            <div class="np-bg" id="np-bg"></div>
+            <div class="np-topbar">
+                <button class="np-down" id="np-down"><i class="fa-solid fa-chevron-down"></i></button>
+                <span class="np-source">PLAYING FROM SUGAM</span>
+                <button class="np-menu" id="np-menu"><i class="fa-solid fa-ellipsis"></i></button>
+            </div>
+            <div class="np-art-container">
+                <canvas id="circular-visualizer-canvas"></canvas>
+                <img src="https://i.ytimg.com/vi/lp-EO5I60KA/hqdefault.jpg" alt="" id="np-artwork" class="np-artwork">
+                <div class="np-lyrics-overlay" id="np-lyrics-overlay">
+                    <div class="np-lyrics-content" id="np-lyrics-content">Click "Show Lyrics" to load...</div>
+                </div>
+            </div>
+            <div class="np-info">
+                <div class="np-info-left">
+                    <h2 class="np-title" id="np-title">Select a track</h2>
+                    <p class="np-artist" id="np-artist">Sugam</p>
+                </div>
+                <div class="np-info-actions" style="display:flex;align-items:center;gap:12px;">
+                    <button class="np-ctrl" id="btn-show-lyrics" title="Show Lyrics" style="font-size:18px;color:var(--text-subdued);transition:color 0.2s;"><i class="fa-solid fa-align-left"></i></button>
+                    <button class="np-like" id="np-like"><i class="fa-regular fa-heart"></i></button>
+                </div>
+            </div>
+            <div class="np-progress">
+                <div class="np-seekbar" id="np-seekbar">
+                    <div class="np-seekbar-fill" id="np-seekbar-fill"></div>
+                    <div class="np-seekbar-dot" id="np-seekbar-dot"></div>
+                </div>
+                <div class="np-times">
+                    <span id="np-time-cur">0:00</span>
+                    <span id="np-time-total">0:00</span>
+                </div>
+            </div>
+            <div class="np-controls">
+                <button class="np-ctrl" id="np-shuffle"><i class="fa-solid fa-shuffle"></i></button>
+                <button class="np-ctrl np-ctrl-big" id="np-prev"><i class="fa-solid fa-backward-step"></i></button>
+                <button class="np-ctrl np-ctrl-play" id="np-play-pause"><i class="fa-solid fa-play" id="np-play-icon"></i></button>
+                <button class="np-ctrl np-ctrl-big" id="np-next"><i class="fa-solid fa-forward-step"></i></button>
+                <button class="np-ctrl" id="np-repeat"><i class="fa-solid fa-repeat"></i></button>
+            </div>
+            <!-- Visualizer -->
+            <div class="np-visualizer">
+                <canvas id="visualizer-canvas"></canvas>
+            </div>
+
+            <div id="yt-player-wrap" style="width:1px;height:1px;overflow:hidden;position:absolute;top:-9999px;">
+                <div id="yt-player-iframe"></div>
+            </div>
+            <!-- Saavn Audio Player -->
+            <audio id="saavn-audio" preload="auto"></audio>
+        </div>
+
+        <!-- ═══ MINI PLAYER ═══ -->
+        <div class="mini-player" id="mini-player">
+            <div class="mp-progress-line"><div class="mp-progress-fill" id="mp-progress-fill"></div></div>
+            <div class="mp-content" id="mp-content">
+                <img src="https://i.ytimg.com/vi/lp-EO5I60KA/hqdefault.jpg" alt="" id="mp-cover" class="mp-cover">
+                <div class="mp-meta">
+                    <span class="mp-title" id="mp-title">Select a track</span>
+                    <span class="mp-artist" id="mp-artist">Sugam</span>
+                </div>
+                <div class="mp-actions">
+                    <button class="mp-btn" id="mp-play-pause"><i class="fa-solid fa-play" id="mp-play-icon"></i></button>
+                    <button class="mp-btn" id="mp-close-btn" title="Remove Player"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ BOTTOM NAV ═══ -->
+        <nav class="bottom-nav" id="bottom-nav">
+            <button class="bnav-tab active" data-view="home"><i class="fa-solid fa-house"></i><span>Home</span></button>
+            <button class="bnav-tab" data-view="search"><i class="fa-solid fa-magnifying-glass"></i><span>Search</span></button>
+            <button class="bnav-tab" data-view="library"><i class="fa-solid fa-lines-staggered"></i><span>Library</span></button>
+        </nav>
+
+        <!-- ═══ PASTE MODAL ═══ -->
+        <div class="paste-modal-overlay" id="paste-modal-overlay">
+            <div class="paste-modal">
+                <div class="paste-modal-header">
+                    <h3>Add from YouTube</h3>
+                    <button class="icon-btn" id="paste-modal-close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="paste-input-row">
+                    <input type="text" id="yt-url-input-modal" placeholder="Paste YouTube link here..." spellcheck="false" autocomplete="off">
+                    <button id="yt-add-btn-modal"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+                <p class="paste-hint" id="paste-status-modal">Supports youtube.com, youtu.be & music.youtube.com</p>
+            </div>
+        </div>
+
+        <!-- ═══ SETTINGS PANEL ═══ -->
+        <div class="settings-overlay" id="settings-overlay">
+            <div class="settings-panel">
+                <div class="settings-header">
+                    <h3>⚙ Personalize</h3>
+                    <button class="icon-btn" id="settings-close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+
+                <!-- Theme Presets -->
+                <div class="setting-group">
+                    <label class="setting-label">🎨 Theme</label>
+                    <div class="theme-presets" id="theme-presets">
+                        <button class="theme-btn" data-theme="dark" style="background:#121212" title="Dark"></button>
+                        <button class="theme-btn" data-theme="midnight" style="background:linear-gradient(135deg,#0a0a2e,#1a1a4e)" title="Midnight"></button>
+                        <button class="theme-btn" data-theme="forest" style="background:linear-gradient(135deg,#0a1f0a,#1a3a1a)" title="Forest"></button>
+                        <button class="theme-btn" data-theme="sunset" style="background:linear-gradient(135deg,#2a0a0a,#4a1a0a)" title="Sunset"></button>
+                        <button class="theme-btn" data-theme="ocean" style="background:linear-gradient(135deg,#0a1a2a,#0a2a4a)" title="Ocean"></button>
+                        <button class="theme-btn active" data-theme="purple" style="background:linear-gradient(135deg,#1a0a2a,#2a1a4a)" title="Purple"></button>
+                        <button class="theme-btn" data-theme="light" style="background:linear-gradient(135deg,#e5daf7,#f5f2fc)" title="Light Mode"></button>
+                    </div>
+                </div>
+
+                <!-- Custom Background Image -->
+                <div class="setting-group">
+                    <label class="setting-label">🖼 Background Image</label>
+                    <div class="bg-upload-row">
+                        <button class="setting-action-btn" id="btn-upload-bg"><i class="fa-solid fa-upload"></i> Upload Image</button>
+                        <button class="setting-action-btn danger" id="btn-remove-bg"><i class="fa-solid fa-trash"></i> Remove</button>
+                    </div>
+                    <input type="file" id="bg-file-input" accept="image/*" style="display:none">
+                    <input type="range" id="bg-opacity" min="0" max="100" value="30" class="setting-range">
+                    <span class="setting-hint">Background opacity</span>
+                </div>
+
+                <!-- Auto Theme Rotation -->
+                <div class="setting-group">
+                    <label class="setting-label">🔄 Auto Theme Rotation</label>
+                    <div class="toggle-row">
+                        <span>Change theme every 30 seconds</span>
+                        <label class="toggle">
+                            <input type="checkbox" id="auto-theme-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Accent Color -->
+                <div class="setting-group">
+                    <label class="setting-label">💚 Accent Color</label>
+                    <div class="accent-presets" id="accent-presets">
+                        <button class="accent-btn" data-accent="#1db954" style="background:#1db954"></button>
+                        <button class="accent-btn" data-accent="#e8115b" style="background:#e8115b"></button>
+                        <button class="accent-btn" data-accent="#4a7dff" style="background:#4a7dff"></button>
+                        <button class="accent-btn" data-accent="#ff9d45" style="background:#ff9d45"></button>
+                        <button class="accent-btn active" data-accent="#b44aff" style="background:#b44aff"></button>
+                        <button class="accent-btn" data-accent="#ff6b8a" style="background:#ff6b8a"></button>
+                    </div>
+                </div>
+
+                <!-- Equalizer Presets -->
+                <div class="setting-group">
+                    <label class="setting-label">🎛 Equalizer Presets</label>
+                    <div class="eq-grid">
+                        <button class="eq-preset-btn active" data-preset="balance">Balance</button>
+                        <button class="eq-preset-btn" data-preset="bass">Bass Boost</button>
+                        <button class="eq-preset-btn" data-preset="smooth">Smooth</button>
+                        <button class="eq-preset-btn" data-preset="club">Club</button>
+                    </div>
+                    <span class="setting-hint">Shapes visualizer wave physics & rendering.</span>
+                </div>
+
+                <!-- Local Audio Files -->
+                <div class="setting-group" style="margin-top:16px;">
+                    <label class="setting-label">📁 Local Audio Files</label>
+                    <button class="setting-action-btn" id="btn-import-local" style="width:100%;text-align:center;background:rgba(255,255,255,0.05);padding:10px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);font-weight:600;"><i class="fa-solid fa-file-audio"></i> Import Local MP3</button>
+                    <input type="file" id="local-file-input" accept="audio/*" multiple style="display:none">
+                </div>
+
+                <!-- Backup & Restore -->
+                <div class="setting-group" style="margin-top:16px;">
+                    <label class="setting-label">💾 Backup & Restore</label>
+                    <div class="bg-upload-row" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                        <button class="setting-action-btn" id="btn-export-backup" style="background:rgba(255,255,255,0.05);padding:10px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);font-weight:600;"><i class="fa-solid fa-download"></i> Export JSON</button>
+                        <button class="setting-action-btn" id="btn-import-backup-trigger" style="background:rgba(255,255,255,0.05);padding:10px;border-radius:6px;border:1px solid rgba(255,255,255,0.1);font-weight:600;"><i class="fa-solid fa-upload"></i> Import JSON</button>
+                    </div>
+                    <input type="file" id="backup-file-input" accept=".json" style="display:none">
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ ADD TO PLAYLIST MODAL ═══ -->
+        <div class="paste-modal-overlay" id="add-playlist-modal-overlay">
+            <div class="paste-modal" style="background:var(--bg-elevated);border-radius:var(--radius-xl);padding:22px;width:90%;max-width:380px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+                <div class="paste-modal-header" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                    <h3 style="font-size:16px;font-weight:700;">Add to Playlist</h3>
+                    <button class="icon-btn" id="add-playlist-modal-close"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="playlist-select-list" id="playlist-select-list" style="display:flex;flex-direction:column;gap:8px;max-height:240px;overflow-y:auto;padding-right:4px;">
+                    <!-- Dynamic playlist options -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Hidden file input for cover change -->
+        <input type="file" id="cover-file-input" accept="image/*" style="display:none">
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
